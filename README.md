@@ -77,10 +77,10 @@ document.addEventListener('onSMSArrive', function(args) {
 
 The verification SMS message you send to the user must:
 
-    Be no longer than 140 bytes
-    Begin with the prefix <#>
-    Contain a one-time code that the client sends back to your server to complete the verification flow
-    End with an 11-character hash string that identifies your app
+- Be no longer than 140 bytes
+- Begin with the prefix <#>
+- Contain a one-time code that the client sends back to your server to complete the verification flow
+- End with an 11-character hash string that identifies your app
 
 Otherwise, the contents of the verification message can be whatever you choose. It is helpful to create a message from which you can easily extract the one-time code later on. For example, a valid verification message might look like the following:
 
@@ -139,7 +139,7 @@ Please consider contributing with a small **donation** using the PayPal button i
 
 [![Donate](demo/images/PayPal-Donate-Button.png)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=G33QACCVKYD7U)
 
-For support, you may post in the **Issues** section. Be aware that I don't have much time for dealing with Java and the Android APIs, so before you start complaining that *X does not work*, make sure to compare the plugin behavior across different devices and emulators in order to locate the exact source of the problem.
+For support, you may post in the **GitHub Issues** section. Before reporting that *X does not work*, please compare the plugin behavior across different devices and emulators in order to locate the exact source of the problem.
 
 ## How to post Issues
 
