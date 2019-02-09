@@ -1,0 +1,39 @@
+{
+  "name": "cordova-plugin-sms-retriever",
+  "version": "1.0.0",
+  "description": "Cordova plugin to retrieve SMS in Android using the SMS Retriever API.",
+  "cordova": {
+    "id": "cordova-plugin-sms-retriever",
+    "platforms": [
+      "android"
+    ]
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/andreszs/cordova-plugin-sms-retriever.git"
+  },
+  "bugs": {
+    "url": "https://github.com/andreszs/cordova-plugin-sms-retriever/issues"
+  },
+  "keywords": [
+    "cordova",
+    "ecosystem:cordova",
+    "sms",
+    "retriever"
+  ],
+  "engines": [
+    {
+      "name": "cordova",
+      "version": ">=6.0.0"
+    },
+    {
+      "name": "cordova-android",
+      "version": ">=4"
+    }
+  ],
+  "author": {
+    "name": "Andres Zsogon",
+    "email": "andreszs@users.noreply.github.com"
+  },
+  "license": "MIT"
+}
