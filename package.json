@@ -1,6 +1,6 @@
 {
   "name": "cordova-plugin-sms-retriever",
-  "version": "1.0.3",
+  "version": "1.0.6",
   "description": "Cordova plugin to retrieve SMS in Android using the SMS Retriever API.",
   "cordova": {
     "id": "cordova-plugin-sms-retriever",

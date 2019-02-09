@@ -1,4 +1,3 @@
-/* package com.andreszs.cordova.sms; */
 package com.andreszs.smsretriever;
 
 import android.Manifest;
@@ -8,16 +7,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
-import android.database.Cursor;
-import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
-import android.os.Handler;
-import android.provider.Telephony;
 import android.util.Log;
-import android.widget.Toast;
-
-//import java.security.MessageDigest;
 
 import org.apache.cordova.CallbackContext;
 import org.apache.cordova.CordovaInterface;
@@ -36,24 +27,33 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 
+/* AppSignatureHelper */
+import android.content.ContextWrapper;
+import android.content.pm.Signature;
+import android.util.Base64;
+import android.util.Log;
+
+import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.util.ArrayList;
+import java.util.Arrays;
 
 public class SMSRetriever extends CordovaPlugin {
 
+	private CallbackContext callbackContext;
 	private SmsRetrieverClient smsRetrieverClient;
-	private SmsBrReceiver smsReceiver;
+
 	private static final String TAG = "cordova-plugin-sms-retriever";
 	private static final String ACTION_START_WATCH = "startWatch";
-	private static final String ACTION_STOP_WATCH = "stopWatch";
-	//private static final String SMS_RECEIVED_ACTION = "android.provider.Telephony.SMS_RECEIVED";
+	private static final String ACTION_GET_SIGNATURE = "getHashString";
 
-	//private JSONArray requestArgs;
-	private CallbackContext callbackContext;
-
+	/* AppSignatureHelper */
+    private static final String HASH_TYPE = "SHA-256";
+    public static final int NUM_HASHED_BYTES = 9;
+	public static final int NUM_BASE64_CHAR = 11;
 
 	/**
-	* Sets the context of the Command. This can then be used to do things like
-	* get file paths associated with the Activity.
-	*
 	* @param cordova The context of the main Activity.
 	* @param webView The CordovaWebView Cordova is running in.
 	*/
@@ -61,100 +61,115 @@ public class SMSRetriever extends CordovaPlugin {
 	public void initialize(CordovaInterface cordova, CordovaWebView webView) {
 		Log.d(TAG, "initialize");
 		super.initialize(cordova, webView);
-		Context applicationContext = cordova.getActivity().getApplicationContext();
 
 		// Get an instance of SmsRetrieverClient, used to start listening for a matching SMS message.
-		SmsRetrieverClient client = SmsRetriever.getClient(Context);
+		smsRetrieverClient = SmsRetriever.getClient(cordova.getActivity().getApplicationContext());
 	}
 
-	public boolean execute(String action, JSONArray inputs, CallbackContext callbackContext) throws JSONException {
+	public boolean execute(String action, JSONArray args, CallbackContext callbackContext) throws JSONException {
 		PluginResult result = null;
 		this.callbackContext = callbackContext;
-		this.requestArgs = inputs;
 		if (action.equals(ACTION_START_WATCH)) {
-			result = this.startWatch(callbackContext);
-		} else if (action.equals(ACTION_STOP_WATCH)) {
-			result = this.stopWatch(callbackContext);
+			this.startWatch(callbackContext);
+		}else if (action.equals(ACTION_GET_SIGNATURE)) {
+			this.getHashString(callbackContext);
 		} else {
 			Log.d(TAG, String.format("Invalid action passed: %s", action));
 			result = new PluginResult(PluginResult.Status.INVALID_ACTION);
-		}
-		if (result != null) {
 			callbackContext.sendPluginResult(result);
 		}
 		return true;
 	}
 
 	public void onDestroy() {
-		this.stopWatch(null);
+		if (SmsBrReceiver != null) {
+			try {
+				cordova.getActivity().getApplicationContext().unregisterReceiver(SmsBrReceiver);
+				SmsBrReceiver = null;
+				Log.d(TAG, "SMS Retriever unregistered successfully");
+			} catch (Exception e) {
+				Log.e(TAG, "Error unregistering network receiver: " + e.getMessage());
+			}
+		}
 	}
 
-	private PluginResult startWatch(CallbackContext callbackContext) {
+	private void startWatch(final CallbackContext callbackContext) {
 		Log.d(TAG, ACTION_START_WATCH);
 
 		// Starts SmsRetriever, which waits for ONE matching SMS message until timeout
 		// (5 minutes). The matching SMS message will be sent via a Broadcast Intent with
 		// action SmsRetriever#SMS_RETRIEVED_ACTION.
-		Task<Void> task = smsRetrieverClient.startSmsRetriever();
+		try {
+			Task<Void> task = smsRetrieverClient.startSmsRetriever();
 
-		// Listen for success/failure of the start Task.
-		task.addOnSuccessListener(new OnSuccessListener<Void>() {
-			@Override
-			public void onSuccess(Void aVoid) {
-				// Successfully started retriever, expect broadcast intent
-				Log.d(TAG, "SmsRetrievalResult started successfully");
-				//Toast.makeText(cordova.getActivity().getApplicationContext(), getString(R.string.verifier_registered), Toast.LENGTH_SHORT).show();
-				Toast.makeText(cordova.getActivity().getApplicationContext(), "SmsRetrievalResult started successfully", Toast.LENGTH_SHORT).show();
-				callbackContext.success("SmsRetrievalResult started successfully");
+			// Listen for success/failure of the start Task.
+			task.addOnSuccessListener(new OnSuccessListener<Void>() {
+				@Override
+				public void onSuccess(Void aVoid) {
+					// Successfully started retriever, expect broadcast intent
+					Log.d(TAG, "smsRetrieverClient started successfully");
 
-				// Use a BroadcastReceiver to receive the verification message.
-				IntentFilter intentFilter = new IntentFilter();
-				intentFilter.addAction(SmsRetriever.SMS_RETRIEVED_ACTION);
-				cordova.getActivity().getApplicationContext().registerReceiver(SmsBrReceiver, intentFilter);
-			}
-		});
-		task.addOnFailureListener(new OnFailureListener() {
-			@Override
-			public void onFailure(@NonNull Exception e) {
-				// Failed to start retriever, inspect Exception for more details
-				Log.d(TAG, "SmsRetrievalResult start failed.", e);
-				Toast.makeText(cordova.getActivity().getApplicationContext(), "startSmsRetriever error", Toast.LENGTH_SHORT).show();
-				callbackContext.error(e);
-			}
-		});
+					// Use a BroadcastReceiver to receive the verification message.
+					IntentFilter intentFilter = new IntentFilter();
+					intentFilter.addAction(SmsRetriever.SMS_RETRIEVED_ACTION);
 
-		return null;
-	}
+					try {
+						cordova.getActivity().getApplicationContext().registerReceiver(SmsBrReceiver, intentFilter);
+						PluginResult result = new PluginResult(PluginResult.Status.OK, "SMS Retriever started OK for 5 minutes");
+						result.setKeepCallback(true);
+						callbackContext.sendPluginResult(result);
+					} catch (Exception e) {
+						PluginResult result = new PluginResult(PluginResult.Status.ERROR, e.getMessage());
+						callbackContext.sendPluginResult(result);
+					}
+				}
+			});
+			task.addOnFailureListener(new OnFailureListener() {
+				@Override
+				public void onFailure(Exception e) {
+					// Failed to start retriever, inspect Exception for more details
+					Log.d(TAG, "smsRetrieverClient start failed.", e);
 
-	private PluginResult stopWatch(CallbackContext callbackContext) {
-		Log.d(TAG, ACTION_STOP_WATCH);
+					PluginResult result = new PluginResult(PluginResult.Status.ERROR, e.getMessage());
+					callbackContext.sendPluginResult(result);
+				}
+			});
 
-		if (this.SmsBrReceiver != null) {
-			try {
-				webView.getContext().unregisterReceiver(this.SmsBrReceiver);
-				callbackContext.success();
-			} catch (Exception e) {
-				Log.d(LOG_TAG, "error unregistering network receiver: " + e.getMessage());
-				callbackContext.error(e);
-			} finally {
-				this.SmsBrReceiver = null;
-			}
+		} catch (Exception e) {
+			PluginResult result = new PluginResult(PluginResult.Status.ERROR, e.getMessage());
+			callbackContext.sendPluginResult(result);
 		}
-
-		return null;
 	}
-
-	/*
-	private void onSMSArrive(JSONObject json) {
-		webView.loadUrl("javascript:try{cordova.fireDocumentEvent('onSMSArrive', {'data': "+json+"});}catch(e){console.log('exception firing onSMSArrive event from native');};");
-	}
-	*/
 
 	/**
-	* BroadcastReceiver to wait for SMS messages. This can be registered either
-	* in the AndroidManifest or at runtime. Should filter Intents on
-	* SmsRetriever.SMS_RETRIEVED_ACTION.
-	*/
+	 * Google Play services uses the hash string to determine which verification messages to send to your app.
+	 * The hash string is made of your app's package name and your app's public key certificate.
+	 * https://developers.google.com/identity/sms-retriever/verify#computing_your_apps_hash_string
+	 */
+	private void getHashString(final CallbackContext callbackContext){
+
+		ArrayList<String> appCodes = this.getAppSignatures();
+
+		if(appCodes.size() == 0 || appCodes.get(0) == null){
+
+			String err = "Unable to find package to obtain hash";
+			PluginResult result = new PluginResult(PluginResult.Status.ERROR, err);
+			callbackContext.sendPluginResult(result);
+
+		}else{
+
+			String hash = appCodes.get(0);
+			PluginResult result = new PluginResult(PluginResult.Status.OK, hash);
+			callbackContext.sendPluginResult(result);
+
+		}
+	}
+
+	/**
+	 * BroadcastReceiver to wait for SMS messages. This can be registered either
+	 * in the AndroidManifest or at runtime. Should filter Intents on
+	 * SmsRetriever.SMS_RETRIEVED_ACTION.
+	 */
 	private BroadcastReceiver SmsBrReceiver = new BroadcastReceiver() {
 		@Override
 		public void onReceive(Context context, Intent intent) {
@@ -166,28 +181,70 @@ public class SMSRetriever extends CordovaPlugin {
 					case CommonStatusCodes.SUCCESS:
 						// Get SMS message contents
 						String smsMessage = (String) extras.get(SmsRetriever.EXTRA_SMS_MESSAGE);
-						Log.d(TAG, "Retrieved sms code: " + smsMessage);
-						// Extract one-time code from the message and complete verification by sending the code back to your server.
-
-						Toast.makeText(cordova.getActivity().getApplicationContext(), smsMessage, Toast.LENGTH_LONG).show();
+						Log.d(TAG, "Retrieved SMS: " + smsMessage);
 						PluginResult result = new PluginResult(PluginResult.Status.OK, smsMessage);
-						this.callbackContext.sendPluginResult(result);
+						callbackContext.sendPluginResult(result);
 
 						break;
 
 					case CommonStatusCodes.TIMEOUT:
 						// Waiting for SMS timed out (5 minutes)
-						Toast.makeText(cordova.getActivity().getApplicationContext(), "TIMEOUT ERROR", Toast.LENGTH_LONG).show();
+						Log.e(TAG, "TIMEOUT");
 						PluginResult resultTimeout = new PluginResult(PluginResult.Status.ERROR, "TIMEOUT");
-						this.callbackContext.sendPluginResult(resultTimeout);
+						callbackContext.sendPluginResult(resultTimeout);
 
 						break;
 				}
 
 			}
 		}
-
-
 	};
+
+	/**
+	 * Get all the app signatures for the current package
+	 * https://github.com/googlesamples/android-credentials/blob/master/sms-verification/android/app/src/main/java/com/google/samples/smartlock/sms_verify/AppSignatureHelper.java
+	 * @return
+	 */
+	private ArrayList<String> getAppSignatures() {
+		ArrayList<String> appCodes = new ArrayList<String>();
+
+		try {
+			// Get all package signatures for the current package
+			String packageName = cordova.getActivity().getApplicationContext().getPackageName();
+			PackageManager packageManager = cordova.getActivity().getApplicationContext().getPackageManager();
+			Signature[] signatures = packageManager.getPackageInfo(packageName, PackageManager.GET_SIGNATURES).signatures;
+
+			// For each signature create a compatible hash
+			for (Signature signature : signatures) {
+				String hash = hash(packageName, signature.toCharsString());
+				if (hash != null) {
+					appCodes.add(String.format("%s", hash));
+				}
+			}
+		} catch (PackageManager.NameNotFoundException e) {
+			Log.e(TAG, "Unable to find package to obtain hash.", e);
+		}
+		return appCodes;
+	}
+
+	private static String hash(String packageName, String signature) {
+		String appInfo = packageName + " " + signature;
+		try {
+			MessageDigest messageDigest = MessageDigest.getInstance(HASH_TYPE);
+			messageDigest.update(appInfo.getBytes(StandardCharsets.UTF_8));
+			byte[] hashSignature = messageDigest.digest();
+
+			// truncated into NUM_HASHED_BYTES
+			hashSignature = Arrays.copyOfRange(hashSignature, 0, NUM_HASHED_BYTES);
+			// encode into Base64
+			String base64Hash = Base64.encodeToString(hashSignature, Base64.NO_PADDING | Base64.NO_WRAP);
+			base64Hash = base64Hash.substring(0, NUM_BASE64_CHAR);
+
+			return base64Hash;
+		} catch (NoSuchAlgorithmException e) {
+			Log.e(TAG, "hash:NoSuchAlgorithm", e);
+		}
+		return null;
+	}
 
 }

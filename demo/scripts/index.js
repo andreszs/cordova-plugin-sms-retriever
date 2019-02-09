@@ -37,7 +37,7 @@
 			document.getElementById('getHashString').addEventListener('click', function() {
 				SMSRetriever.getHashString(function(hash) {
 					document.getElementById('status').innerHTML = 'App hash for incoming SMS: ' + hash;
-					document.getElementById('txtSample').innerHTML = '<#> ABC123 is your verification code for ExampleApp. ' + hash;
+					document.getElementById('txtMessage').innerHTML = '<#> ABC123 is your verification code for ExampleApp. ' + hash;
 				}, function(err) {
 					document.getElementById('status').innerHTML = 'Plugin error: ' + err;
 				});
