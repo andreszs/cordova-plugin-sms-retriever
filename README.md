@@ -100,9 +100,9 @@ To test this plugin in a Cordova app using the provided sample:
 
 Here are some screens from the **SMSReceiverDemo** sample app included in the demo folder. Feel free to try this demo in whatever device you find.
 
-![ScreenShot](demo/www/images/Screenshot1.png)
+![ScreenShot](demo/images/Screenshot1.png)
 
-![ScreenShot](demo/www/images/Screenshot2.png)
+![ScreenShot](demo/images/Screenshot2.png)
 
 ## About this Plugin
 
@@ -137,7 +137,7 @@ I have tested this plugin with success on:
 
 Please consider contributing with a small **donation** using the PayPal button if you like this plugin and it works as expected. No PayPal account is needed.
 
-[![Donate](demo/www/images/PayPal-Donate-Button.png)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=G33QACCVKYD7U)
+[![Donate](demo/images/PayPal-Donate-Button.png)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=G33QACCVKYD7U)
 
 For support, you may post in the **Issues** section. Be aware that I don't have much time for dealing with Java and the Android APIs, so before you start complaining that *X does not work*, make sure to compare the plugin behavior across different devices and emulators in order to locate the exact source of the problem.
 
