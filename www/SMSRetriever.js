@@ -1,4 +1,3 @@
-cordova.define("cordova-plugin-sms-retriever.SMSRetriever", function(require, exports, module) {
 var smsRetriever = {};
 
 /* Start the SMS Retriever API and listen for incoming SMS + trigger onSMSArrive event when valid SMS arrives */
@@ -30,5 +29,3 @@ smsRetriever.fireOnSmsArrive = function (message) {
 };
 
 module.exports = smsRetriever;
-
-});
