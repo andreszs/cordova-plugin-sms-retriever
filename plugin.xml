@@ -23,7 +23,10 @@
 
 	<!-- android -->
 	<platform name="android">
-		<framework src="com.google.android.gms:play-services-auth-api-phone:15.0.1"/>
+		
+		<preference name="PLAY_SERVICES_VERSION" default="11.8.0"/>
+		
+		<framework src="com.google.android.gms:play-services-auth-api-phone:$PLAY_SERVICES_VERSION"/>
 
 		<config-file target="res/xml/config.xml" parent="/*">
 			<feature name="SMSRetriever">
