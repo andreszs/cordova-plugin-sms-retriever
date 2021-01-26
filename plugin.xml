@@ -5,8 +5,8 @@
 	id="cordova-plugin-sms-retriever"
 	version="1.0.9">
 
-	<name>SMS Retriever</name>
-	<description>Cordova plugin to retrieve SMS in Android using the SMS Retriever API.</description>
+	<name>SMS Retriever API</name>
+	<description>Cordova plugin to retrieve SMS in Android using the SMS Retriever API without following a specific SMS format.</description>
 	<author>Andres Zsogon</author>
 	<license>MIT</license>
 	<keywords>sms,retriever</keywords>
@@ -24,18 +24,13 @@
 	<!-- android -->
 	<platform name="android">
 		
-		<preference name="PLAY_SERVICES_VERSION" default="11.8.0"/>
+		<framework src="com.google.android.gms:play-services-auth-api-phone:17.4.0"/>
+		<framework src="com.google.android.gms:play-services-auth:17.0.0"/>
 		
-		<framework src="com.google.android.gms:play-services-auth-api-phone:$PLAY_SERVICES_VERSION"/>
-
 		<config-file target="res/xml/config.xml" parent="/*">
 			<feature name="SMSRetriever">
 			<param name="android-package" value="com.andreszs.smsretriever.SMSRetriever"/>
 			</feature>
-		</config-file>
-
-		<config-file target="AndroidManifest.xml" parent="/*">
-			<uses-feature android:name="android.hardware.telephony" android:required="false" />
 		</config-file>
 
 		<source-file src="src/android/SMSRetriever.java" target-dir="src/com/andreszs/smsretriever" />
