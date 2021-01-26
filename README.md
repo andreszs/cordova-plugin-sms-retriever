@@ -78,6 +78,8 @@ Here are some screens from the **SMSReceiverDemo** sample app included in the de
 
 ![ScreenShot](demo/images/Screenshot2.png)
 
+![ScreenShot](demo/images/Screenshot3.png)
+
 ## About this Plugin
 
 ### Prerequisites
