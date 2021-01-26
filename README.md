@@ -74,9 +74,9 @@ To test this plugin in a Cordova app using the provided sample:
 
 Here are some screens from the **SMSReceiverDemo** sample app included in the demo folder. Feel free to try this demo in whatever device you find.
 
-![ScreenShot](demo/images/Screenshot1.png)
+![ScreenShot](demo/images/ScreenShot1.png)
 
-![ScreenShot](demo/images/Screenshot2.png)
+![ScreenShot](demo/images/ScreenShot2.png)
 
 ![ScreenShot](demo/images/Screenshot3.png)
 
