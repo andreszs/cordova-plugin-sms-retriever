@@ -18,20 +18,14 @@
     <fieldset>
         <legend>Methods</legend>
         <button type="button" id="startWatch" style="padding:4px;margin:4px 0">SMSRetriever.startWatch()</button>
-        <button type="button" id="getHashString" style="padding:4px;margin:4px 0">SMSRetriever.getHashString()</button>
     </fieldset>
     <fieldset>
         <legend>Status</legend>
         <label id="status" style="color:#F4511E">SMS watching not started.</label>
     </fieldset>
     <fieldset>
-        <legend>Events</legend>
-        <label id="event" style="color:#9C27B0">Waiting for event.</label>
-    </fieldset>
-    <fieldset>
         <legend>Sample SMS</legend>
-        <textarea rows="3" cols="10" id="txtSample">Click getHashString() to create a sample SMS...</textarea>
-        <label><small>In your app you must use the hash retrieved from it beforehand. Do not use hash strings dynamically computed on the client in your verification messages.</small></label>
+        <label>Any type of SMS that includes 4 to 10 digit number will be intercepted by this plugin. We can limit the traffic to one specifc sender's phone.</label>
     </fieldset>
     <fieldset>
         <legend>Contribute</legend>
@@ -42,6 +36,7 @@
         <legend>About Plugin</legend>
         <label>Refer to this page to send feedback, contributions or more info.</label>
         <button type="button" id="btnWebsite" style="padding:4px;margin:4px 0">GitHub Page</button>
+        <label>This plugin uses The SMS User Consent API which complements the SMS Retriever API by allowing an app to prompt the user to grant access to the content of a single SMS message. When a user gives consent, the app will then have access to the entire message body to automatically complete SMS verification.</label>
         <label style="color:darkred">This plugin requires the <strong>cordova-support-google-services</strong> plugin to function properly.</label>
     </fieldset>
     <fieldset>
