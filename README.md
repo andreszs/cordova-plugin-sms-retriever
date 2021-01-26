@@ -17,10 +17,6 @@ Add the dependent [cordova-support-google-services](https://github.com/chemerisu
 cordova plugin add cordova-support-google-services
 ```
 
-Create your project and Android app in [Firebase Console](https://console.firebase.google.com/ "Firebase Console"), then download the **google-services.json** file into your `platforms/android` folder.
-
-[Sign your APK](https://cordova.apache.org/docs/en/latest/guide/platforms/android/#signing-an-app "sign your APK") with a keystore file if you haven't done it already.
-
 ## Methods
 
 ### SMSRetriever.startWatch(successCallback, failureCallback)
@@ -39,31 +35,11 @@ SMSRetriever.startWatch(function(msg) {
 
 **Notice:** The API will timeout **5 minutes** after starting if no valid SMS has arrived. Also, the API stops listening for SMS after a valid SMS has been detected.
 
-### SMSRetriever.getHashString(successCallback, failureCallback)
-
-Get the 11-character hash string for your app using the [AppSignatureHelper](https://github.com/googlesamples/android-credentials/blob/master/sms-verification/android/app/src/main/java/com/google/samples/smartlock/sms_verify/AppSignatureHelper.java "AppSignatureHelper") class.
-
-```javascript
-SMSRetriever.getHashString(function(hash) {
-	// Hash string returned OK
-	console.log(hash);
-}, function(err) {
-	// Error retrieving hash string
-	console.error(err);
-});
-```
-
-**Warning:** Google advices against dynamically retrieving your hash code before sending the SMS:
-
-> Do not use hash strings dynamically computed on the client in your verification messages.
-
-Therefore, do **not** invoke this method from the published app. The hash is the same for all users, and bound to your keystore signing keys, so you can get it once and never again call the `getHashString()` method.
-
 ## Events
 
 ### onSMSArrive
 
-Triggered when a [verification SMS](https://developers.google.com/identity/sms-retriever/verify#1_construct_a_verification_message "verification SMS") with the proper 11-character hash string has arrived. You need call **startWatch()** first. Example usage:
+Triggered when a verification SMS that includes 4 to 10 digits number. You need call **startWatch()** first. Example usage:
 
 ```javascript
 document.addEventListener('onSMSArrive', function(args) {
@@ -75,16 +51,14 @@ document.addEventListener('onSMSArrive', function(args) {
 
 ## Construct a verification SMS
 
-The verification SMS message you send to the user must:
+We don't need The verification SMS message to follow the SMS criteria from the [SMS Verification API](https://developers.google.com/identity/sms-retriever/verify#1_construct_a_verification_message "verification SMS"):
 
     Be no longer than 140 bytes
     Begin with the prefix <#>
     Contain a one-time code that the client sends back to your server to complete the verification flow
     End with an 11-character hash string that identifies your app
 
-Otherwise, the contents of the verification message can be whatever you choose. It is helpful to create a message from which you can easily extract the one-time code later on. For example, a valid verification message might look like the following:
-
-    <#> 123ABC is your ExampleApp code. FAw9qCX9VSu
+The SMS Retriever API offers the best user experience for automating the SMS-based user verification process. However, there are situations where you don't control the format of the SMS message and cannot support the SMS Retriever API. In this case, you can use this API to streamline the process.
 
 ## Demo App
 
