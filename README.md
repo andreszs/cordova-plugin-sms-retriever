@@ -138,9 +138,9 @@ Please don't expect me to instantly reply with a magical solution or a new plugi
 
 ## Changelog
 
-#### Version 1.1.0
-- Added `cordova >= 7.1.0` engine
-- Added `cordova-android >= 6.3.0` engine
-- Added missing `com.google.android.gms:play-services-auth` framework
-- Bumped `PLAY_SERVICES_VERSION` to 15.0.0.
+#### Version 1.1.0 (2021-11-30)
+- Added `cordova >= 7.1.0` engine to config.xml
+- Added `cordova-android >= 6.3.0` engine to config.xml
+- Added missing `com.google.android.gms:play-services-auth` framework to config.xml
+- Bumped `PLAY_SERVICES_VERSION` to 15.0.0 in config.xml
 
