@@ -12,11 +12,6 @@ Add the plugin with Cordova CLI:
 ```bash
 cordova plugin add cordova-plugin-sms-retriever
 ```
-Add the dependent [cordova-support-google-services](https://github.com/chemerisuk/cordova-support-google-services "cordova-support-google-services") plugin:
-```bash
-cordova plugin add cordova-support-google-services
-```
-
 Create your project and Android app in [Firebase Console](https://console.firebase.google.com/ "Firebase Console"), then download the **google-services.json** file into your `platforms/android` folder.
 
 [Sign your APK](https://cordova.apache.org/docs/en/latest/guide/platforms/android/#signing-an-app "sign your APK") with a keystore file if you haven't done it already.
