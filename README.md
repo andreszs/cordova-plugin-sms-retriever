@@ -103,7 +103,7 @@ Here are some screens from the **SMSReceiverDemo** sample app included in the de
 
 ### Prerequisites
 
-This plugin requires the [Google Play Services 15.0.0](http://https://www.apkmirror.com/apk/google-inc/google-play-services/google-play-services-15-0-90-release/ "Google Play Services 15.0.0") or newer in order to work properly.
+This plugin requires the [Google Play Services 15.0.0](https://www.apkmirror.com/apk/google-inc/google-play-services/google-play-services-15-0-90-release/ "Google Play Services 15.0.0") or newer in order to work properly.
 
 ### Does the plugin work in the Android emulator?
 
