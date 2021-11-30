@@ -8,7 +8,7 @@ Cordova plugin to receive verification SMS in Android using the [SMS Retriever A
 
 ## Installation
 
-Add the plugin with Cordova CLI (v6 or later):
+Add the plugin with Cordova CLI:
 ```bash
 cordova plugin add cordova-plugin-sms-retriever
 ```
@@ -108,7 +108,7 @@ Here are some screens from the **SMSReceiverDemo** sample app included in the de
 
 ### Prerequisites
 
-This plugin requires the Google Play Services version 10.2 or newer in order to work properly. You must also install the Google Play Services support plugin as explained in the **Install** section.
+This plugin requires the [Google Play Services 15.0.0](http://https://www.apkmirror.com/apk/google-inc/google-play-services/google-play-services-15-0-90-release/ "Google Play Services 15.0.0") or newer in order to work properly.
 
 ### Does the plugin work in the Android emulator?
 
@@ -121,17 +121,6 @@ When the app is sent to the background, as long as Android has not unloaded it t
 ### Does the plugin require SMS permissions?
 
 **No**, the plugin does not require any kind of permissions because it relies on the [SMS Retriever API](https://developers.google.com/identity/sms-retriever/overview "SMS Retriever API") created by Google.
-
-### How this plugin has been tested?
-
-I have tested this plugin with success on:
-
- - Android 5.1.1 emulator
- - Android 6.0 emulator
- - Android 7.1.1 emulator
- - BLU Energy Mini (Android 5.1 Lollipop)
- - BLU Vivo 5 Mini (Android 6.0 Marshmallow)
- - Samsung Galaxy I9190 (Android 4.4.2 KitKat)
 
 ## Contributing
 
@@ -146,4 +135,12 @@ For support, you may post in the **GitHub Issues** section. Before reporting tha
 If you are convinced that the plugin needs to be fixed / updated, kindly **post your issue in full detail**, including Android version, device brand and name, Cordova and cordova-android versions.
 
 Please don't expect me to instantly reply with a magical solution or a new plugin version, but I'll try to help in whatever I can. I'm interested in mantaining this plugin in a working condition, so try to send useful, constructive feedback whenever possible.
+
+## Changelog
+
+#### Version 1.1.0
+- Added `cordova >= 7.1.0` engine
+- Added `cordova-android >= 6.3.0` engine
+- Added missing `com.google.android.gms:play-services-auth` framework
+- Bumped `PLAY_SERVICES_VERSION` to 15.0.0.
 
