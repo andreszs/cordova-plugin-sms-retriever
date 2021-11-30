@@ -143,4 +143,5 @@ Please don't expect me to instantly reply with a magical solution or a new plugi
 - Added `cordova-android >= 6.3.0` engine to config.xml
 - Added missing `com.google.android.gms:play-services-auth` framework to config.xml
 - Bumped `PLAY_SERVICES_VERSION` to 15.0.0 in config.xml
+- **Notice**: This plugin requires `classpath com.android.tools.build:gradle:4.0.1` in build.gradle, otherwise your build will probably fail with Cordova 9.0.0.
 
