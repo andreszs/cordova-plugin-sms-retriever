@@ -3,7 +3,7 @@
 <plugin xmlns="http://apache.org/cordova/ns/plugins/1.0"
 	xmlns:android="http://schemas.android.com/apk/res/android"
 	id="cordova-plugin-sms-retriever"
-	version="1.1.0">
+	version="1.1.1">
 
 	<name>SMS Retriever</name>
 	<description>Cordova plugin to retrieve SMS in Android using the SMS Retriever API.</description>
@@ -15,8 +15,6 @@
 		<engine name="cordova" version=">=7.1.0"/>
 		<engine name="cordova-android" version=">=6.3.0"/>
 	</engines>
-
-	<dependency id="cordova-support-google-services" />
 
 	<js-module src="www/SMSRetriever.js" name="SMSRetriever">
 		<clobbers target="window.SMSRetriever" />

@@ -138,6 +138,9 @@ Please don't expect me to instantly reply with a magical solution or a new plugi
 
 ## Changelog
 
+#### Version 1.1.1. (2021-11-30)
+- Removed the `cordova-support-google-services` plugin dependency which is no longer required
+
 #### Version 1.1.0 (2021-11-30)
 - Added `cordova >= 7.1.0` engine to config.xml
 - Added `cordova-android >= 6.3.0` engine to config.xml
