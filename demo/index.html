@@ -1,57 +1,64 @@
 <!DOCTYPE html>
 <html>
-<head>
-    <!--
-        Customize the content security policy in the meta tag below as needed. Add 'unsafe-inline' to default-src to enable inline JavaScript.
-        For details, see http://go.microsoft.com/fwlink/?LinkID=617521
-    -->
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self' data: gap: https://ssl.gstatic.com 'unsafe-eval'; style-src 'self' 'unsafe-inline'; media-src *">
-    <meta name="format-detection" content="telephone=no">
-    <meta name="msapplication-tap-highlight" content="no">
-    <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height" />
-    <link rel="stylesheet" type="text/css" href="css/index.css">
-    <title>cordova-plugin-sms-retriever</title>
-</head>
-<body style="background:#E0E0E0;max-width:100%;padding:8px;box-sizing:border-box">
+	<head>
+		<meta charset="UTF-8">
+		<meta http-equiv="Content-Security-Policy" content="default-src 'self' data: gap: https://ssl.gstatic.com 'unsafe-eval'; style-src 'self' 'unsafe-inline'; media-src *">
+		<meta name="format-detection" content="telephone=no">
+		<meta name="msapplication-tap-highlight" content="no">
+		<meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height" />
+		<link rel="stylesheet" type="text/css" href="css/index.css" />
+		<script src="js/jquery-3.6.0.min.js"></script>
+		<title>SMS Retriever Plugin Demo App</title>
+	</head>
+	<body>
+		<h1>cordova-plugin-sms-retriever</h1>
+		<fieldset>
+			<legend>Methods</legend>
+			<button type="button" id="startWatch">startWatch()</button>
+			<button type="button" id="getHashString">getHashString()</button>
+		</fieldset>
 
-    <h1 style="font-size:18px">cordova-plugin-sms-retriever</h1><br />
-    <fieldset>
-        <legend>Methods</legend>
-        <button type="button" id="startWatch" style="padding:4px;margin:4px 0">SMSRetriever.startWatch()</button>
-        <button type="button" id="getHashString" style="padding:4px;margin:4px 0">SMSRetriever.getHashString()</button>
-    </fieldset>
-    <fieldset>
-        <legend>Status</legend>
-        <label id="status" style="color:#F4511E">SMS watching not started.</label>
-    </fieldset>
-    <fieldset>
-        <legend>Events</legend>
-        <label id="event" style="color:#9C27B0">Waiting for event.</label>
-    </fieldset>
-    <fieldset>
-        <legend>Sample SMS</legend>
-        <textarea rows="3" cols="10" id="txtSample">Click getHashString() to create a sample SMS...</textarea>
-        <label><small>In your app you must use the hash retrieved from it beforehand. Do not use hash strings dynamically computed on the client in your verification messages.</small></label>
-    </fieldset>
-    <fieldset>
-        <legend>Contribute</legend>
-        <label>Please contribute with a small donation if you find this plugin useful and to keep it updated. No PayPal account is needed.</label>
-        <div style="text-align:center"><img id="imgDonate" src="images/PayPal-Donate-Button.png" alt="Donate" style="cursor:pointer;margin:auto;" /></div>
-    </fieldset>
-    <fieldset>
-        <legend>About Plugin</legend>
-        <label>Refer to this page to send feedback, contributions or more info.</label>
-        <button type="button" id="btnWebsite" style="padding:4px;margin:4px 0">GitHub Page</button>
-        <label style="color:darkred">This plugin requires the <strong>cordova-support-google-services</strong> plugin to function properly.</label>
-    </fieldset>
-    <fieldset>
-        <legend>About SMS Retriever API</legend>
-        <label>This plugin implements the Android SMS Retriever API to automatically verify phone numbers via SMS.</label>
-        <button type="button" id="smsRetrieverAPI" style="padding:4px;margin:4px 0">SMS Retriever API</button>
-    </fieldset>
+		<fieldset>
+			<legend>Status</legend>
+			<label id="status" class="orange">Initializing...</label>
+		</fieldset>
 
-    <script type="text/javascript" src="cordova.js"></script>
-    <script type="text/javascript" src="scripts/platformOverrides.js"></script>
-    <script type="text/javascript" src="scripts/index.js"></script>
-</body>
+		<fieldset>
+			<legend>Events</legend>
+			<label id="event" class="purple">Waiting for event.</label>
+		</fieldset>
+
+		<fieldset>
+			<legend>Sample SMS</legend>
+			<textarea rows="3" cols="10" id="txtMessage">Click getHashString() to create a sample SMS...</textarea>
+			<label><small>Debug-mode hash strings are valid for emulator instances only.</small></label>
+		</fieldset>
+
+		<fieldset>
+			<legend>Versions</legend>
+			<img alt="" class="info" src="img/outline_info_black_36dp.png" />
+			<label id="a_version" class="blue">App version</label>
+			<label id="p_version" class="blue">Plugin version 2.0.0</label>
+		</fieldset>
+
+		<fieldset>
+			<legend>About Plugin</legend>
+			<label>Created by Andres Zsögön. Refer to README for more info.</label>
+			<hr />
+			<button type="button" id="btnGitHub">GitHub</button>
+		</fieldset>
+
+		<fieldset>
+			<legend>About Demo App</legend>
+			<label>Visit <strong>website</strong> for documentation and reference.</label>
+			<label>Open app in Play Store to check for updates.</label>
+			<label id="lblWebsite" class="link">http://www.andreszsogon.com</label>
+			<hr />
+			<button type="button" id="btnWebsite">Website</button>
+			<button type="button" id="btnPlayStore">Play Store</button>
+		</fieldset>
+
+		<script type="text/javascript" src="cordova.js"></script>
+		<script type="text/javascript" src="js/index.js"></script>
+	</body>
 </html>

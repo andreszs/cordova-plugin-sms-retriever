@@ -6,104 +6,120 @@
 
 Cordova plugin to receive verification SMS in Android using the [SMS Retriever API](https://developers.google.com/identity/sms-retriever/overview).
 
-## Installation
+# Prerequisites
 
-Add the plugin with Cordova CLI:
+This plugin requires the [Google Play Services 15.0.0](https://www.apkmirror.com/apk/google-inc/google-play-services/google-play-services-15-0-90-release/ "Google Play Services 15.0.0") or newer in order to work properly.
+
+# Installation
+
+- Add the plugin from NPM:
 ```bash
 cordova plugin add cordova-plugin-sms-retriever
 ```
-Create your project and Android app in [Firebase Console](https://console.firebase.google.com/ "Firebase Console"), then download the **google-services.json** file into your `platforms/android` folder.
+- Create your project and Android app in [Firebase Console](https://console.firebase.google.com/ "Firebase Console")
+- Download the **google-services.json** file into your **platforms/android** folder.
+- Make sure to sign your build with a keystore file.
 
-[Sign your APK](https://cordova.apache.org/docs/en/latest/guide/platforms/android/#signing-an-app "sign your APK") with a keystore file if you haven't done it already.
+# Methods
 
-## Methods
+## startWatch
+Start listening for a single incoming [verification SMS](https://developers.google.com/identity/sms-retriever/verify#1_construct_a_verification_message "verification SMS"). for 5 minutes.
 
-### SMSRetriever.startWatch(successCallback, failureCallback)
+:warning:  Method moved from **window** to **cordova.plugins** object in version 2.0.0
 
-Start listening for a single incoming [verification SMS](https://developers.google.com/identity/sms-retriever/verify#1_construct_a_verification_message "verification SMS"). This will later raise the **onSMSArrive** event when a valid SMS arrives. Example usage:
+- When a valid SMS is intercepted, the **onSMSArrive** event is fired and SMS watching is stopped.
+- When the 5 minutes timeout is reached, SMS watching is stopped and the failureCallback returns **TIMEOUT**.
 
-```javascript
-SMSRetriever.startWatch(function(msg) {
-	// Wait for incoming SMS
-	console.log(msg);
-}, function(err) {
-	// Failed to start watching for SMS
-	console.error(err);
-});
-```
+### Return values
 
-**Notice:** The API will timeout **5 minutes** after starting if no valid SMS has arrived. Also, the API stops listening for SMS after a valid SMS has been detected.
+- **SMS_RETRIEVER_STARTED**: Retriever started and waiting for incoming SMS.
+- **SMS_RETRIEVER_ALREADY_STARTED**: Your  5 minutes for SMS retrieval are already running and won’t be reset by calling this method again!.
+- **SMS_RETRIEVER_DONE**: Second callback, triggered when an SMS was intercepted.
 
-### SMSRetriever.getHashString(successCallback, failureCallback)
+When and SMS is returned, the SMS retriever API is automatically stopped and no further messages will be intercepted until you start a new one. This is by API design, not a plugin or a demo app restriction.
 
-Get the 11-character hash string for your app using the [AppSignatureHelper](https://github.com/googlesamples/android-credentials/blob/master/sms-verification/android/app/src/main/java/com/google/samples/smartlock/sms_verify/AppSignatureHelper.java "AppSignatureHelper") class.
+### Example
 
 ```javascript
-SMSRetriever.getHashString(function(hash) {
-	// Hash string returned OK
-	console.log(hash);
-}, function(err) {
-	// Error retrieving hash string
-	console.error(err);
-});
+var onSuccess = function (strSuccess) {
+	console.log(strSuccess);
+};
+var onFail = function (strError) {
+	console.log(strError);
+};
+cordova.plugins.SMSRetriever.startWatch(onSuccess, onFail);
 ```
 
-**Warning:** Google advices against dynamically retrieving your hash code before sending the SMS:
+## getHashString
+
+Get the 11-character hash string for your app using the [AppSignatureHelper](https://github.com/googlesamples/android-credentials/blob/master/sms-verification/android/app/src/main/java/com/google/samples/smartlock/sms_verify/AppSignatureHelper.java "AppSignatureHelper") class. This string must be appended to the SMS received in order for the API to read this message. 
+
+:warning: Method moved from **window** to **cordova.plugins** object in version 2.0.0
+
+### Remarks
+
+- The hash will be different from debug and release builds, since they have different signatures.
+- Caling this method with an active SMS retriever running will **void**  the retriever and the SMS wont be incercepted.
+- Google advices against dynamically retrieving your hash code before sending the SMS:
 
 > Do not use hash strings dynamically computed on the client in your verification messages.
 
-Therefore, do **not** invoke this method from the published app. The hash is the same for all users, and bound to your keystore signing keys, so you can get it once and never again call the `getHashString()` method.
+Therefore, **do not** invoke this method from the published app. The hash is the same for all users, and bound to your keystore signing keys, so you can get it once and never again call this method.
 
-## Events
+### Return values
 
-### onSMSArrive
+- *The 11-digit hash string for sending validation SMS.*
 
-Triggered when a [verification SMS](https://developers.google.com/identity/sms-retriever/verify#1_construct_a_verification_message "verification SMS") with the proper 11-character hash string has arrived. You need call **startWatch()** first. Example usage:
+### Example
+
+```javascript
+var onSuccess = function (strHash) {
+	console.log(strHash);
+};
+var onFail = function (strError) {
+	console.log(strError);
+};
+cordova.plugins.SMSRetriever.getHashString(onSuccess , onFail);
+```
+
+# Events
+
+## onSMSArrive
+
+Event fired when a valid [verification SMS](https://developers.google.com/identity/sms-retriever/verify#1_construct_a_verification_message "verification SMS") with the hash string has arrived. You need call **startWatch()** first.
+
+### Example
 
 ```javascript
 document.addEventListener('onSMSArrive', function(args) {
-	// SMS arrived, get its contents
+	// SMS retrieved, get its contents
 	console.info(args.message);
 	// To Do: Extract the received one-time code and verify it on your server
 });
 ```
 
-## Construct a verification SMS
+# Construct a verification SMS
 
 The verification SMS message you send to the user must:
 
-    Be no longer than 140 bytes
-    Begin with the prefix <#>
-    Contain a one-time code that the client sends back to your server to complete the verification flow
-    End with an 11-character hash string that identifies your app
+- Be no longer than 140 bytes
+- ~~Begin with the prefix <#>~~  *No longer needed since plugin version **2.0.0***
+- Contain a one-time code that the client sends back to your server to complete the verification flow
+- End with the 11-character hash string that identifies your app
 
 Otherwise, the contents of the verification message can be whatever you choose. It is helpful to create a message from which you can easily extract the one-time code later on. For example, a valid verification message might look like the following:
 
-    <#> 123ABC is your ExampleApp code. FAw9qCX9VSu
+    AZC123 is your code for andreszsogon.com SMS Retriever Demo App. hi5c8+bkQy0
 
-## Demo App
+:information_source: It is a good practice to prepend the verification code to the beginning of the SMS, in case the retriever fails, the user can see the code immediately from the notification bar.
 
-To test this plugin in a Cordova app using the provided sample:
+# Demo App by Andrés Zsögön
 
- 1. Create a blank cordova app as you regularly do.
- 2. Install it following the previous instructions.
- 3. Replace your `www` folder with the one provided here at the `demo` folder
- 4. Start the app in your emulator or device and test the plugin.
- 5. When you are satisfied, kindly send a donation using the PayPal button on this page.
+You can download the [SMS Retriever plugin demo app](https://www.andreszsogon.com/cordova-sms-retriever-plugin-demo-app/) from the Play Store; its source code is provided in the **demo** folder.
 
-## Screenshots
+[![ScreenShot](https://www.andreszsogon.com/wp-content/uploads/Screenshot_1650660474-165x300.png)](https://www.andreszsogon.com/cordova-sms-retriever-plugin-demo-app/ "![ScreenShot](https://www.andreszsogon.com/wp-content/uploads/Screenshot_1650660474-165x300.png)") [![ScreenShot](https://www.andreszsogon.com/wp-content/uploads/Screenshot_1650660479-165x300.png)](https://www.andreszsogon.com/cordova-sms-retriever-plugin-demo-app/ "![ScreenShot](https://www.andreszsogon.com/wp-content/uploads/Screenshot_1650660479-165x300.png)") [![ScreenShot](https://www.andreszsogon.com/wp-content/uploads/Screenshot_1650660603-165x300.png)](https://www.andreszsogon.com/cordova-sms-retriever-plugin-demo-app/ "![ScreenShot](https://www.andreszsogon.com/wp-content/uploads/Screenshot_1650660603-165x300.png)")
 
-Here are some screens from the **SMSReceiverDemo** sample app included in the demo folder. Feel free to try this demo in whatever device you find.
-
-![ScreenShot](demo/images/Screenshot1.png)
-
-![ScreenShot](demo/images/Screenshot2.png)
-
-## About this Plugin
-
-### Prerequisites
-
-This plugin requires the [Google Play Services 15.0.0](https://www.apkmirror.com/apk/google-inc/google-play-services/google-play-services-15-0-90-release/ "Google Play Services 15.0.0") or newer in order to work properly.
+# FAQ
 
 ### Does the plugin work in the Android emulator?
 
@@ -115,28 +131,29 @@ When the app is sent to the background, as long as Android has not unloaded it t
 
 ### Does the plugin require SMS permissions?
 
-**No**, the plugin does not require any kind of permissions because it relies on the [SMS Retriever API](https://developers.google.com/identity/sms-retriever/overview "SMS Retriever API") created by Google.
+**No**, the plugin does not require any permission because it relies on the [SMS Retriever API](https://developers.google.com/identity/sms-retriever/overview "SMS Retriever API").
 
-## Contributing
+### Does the plugin work in debug APK?
 
-Please consider contributing with a small **donation** using the PayPal button if you like this plugin and it works as expected. No PayPal account is needed.
+In the emulator you can test the plugin using the unsigned debug APK. Real devices require the production APK to work.
 
-[![Donate](demo/images/PayPal-Donate-Button.png)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=G33QACCVKYD7U)
+### Can I get the hash string dynamically?
 
-For support, you may post in the **GitHub Issues** section. Before reporting that *X does not work*, please compare the plugin behavior across different devices and emulators in order to locate the exact source of the problem.
+Google advices against [computing the hash string](https://developers.google.com/identity/sms-retriever/verify#computing_your_apps_hash_string "computing the hash string") in the client for security concerns. Get the hash string in advance and then do not call the get hash method again in the final production app.
 
-## How to post Issues
+# Changelog
 
-If you are convinced that the plugin needs to be fixed / updated, kindly **post your issue in full detail**, including Android version, device brand and name, Cordova and cordova-android versions.
+### 2.0.0
+- :warning: Methods moved from the global **window** to the **cordova.plugins** object
+- Improved all methods return values to make them easier to parse
+- Removed the requirement include the <#> prefix in the SMS
+- Improved stability and error checking
+- Updated demo app, now available in Play Store
 
-Please don't expect me to instantly reply with a magical solution or a new plugin version, but I'll try to help in whatever I can. I'm interested in mantaining this plugin in a working condition, so try to send useful, constructive feedback whenever possible.
-
-## Changelog
-
-#### Version 1.1.1. (2021-11-30)
+### 1.1.1
 - Removed the `cordova-support-google-services` plugin dependency which is no longer required
 
-#### Version 1.1.0 (2021-11-30)
+### 1.1.0
 - Added `cordova >= 7.1.0` engine to config.xml
 - Added `cordova-android >= 6.3.0` engine to config.xml
 - Added missing `com.google.android.gms:play-services-auth` framework to config.xml
