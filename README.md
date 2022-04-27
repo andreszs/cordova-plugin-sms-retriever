@@ -36,7 +36,7 @@ Start listening for a single incoming [verification SMS](https://developers.goog
 - **SMS_RETRIEVER_ALREADY_STARTED**: Your  5 minutes for SMS retrieval are already running and won’t be reset by calling this method again!.
 - **SMS_RETRIEVER_DONE**: Second callback, triggered when an SMS was intercepted.
 
-When and SMS is returned, the SMS retriever API is automatically stopped and no further messages will be intercepted until you start a new one. This is by API design, not a plugin or a demo app restriction.
+When the SMS is returned, the retriever API is automatically stopped and no further messages will be intercepted until you start a new one. This is by API design, not a plugin or a demo app restriction.
 
 ### Example
 
