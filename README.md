@@ -88,6 +88,10 @@ cordova.plugins.SMSRetriever.getHashString(onSuccess , onFail);
 
 Event fired when a valid [verification SMS](https://developers.google.com/identity/sms-retriever/verify#1_construct_a_verification_message "verification SMS") with the hash string has arrived. You need call **startWatch()** first.
 
+### Remarks
+
+- If the SMS is not retrieved in your debug build, try the signed production APK.
+
 ### Example
 
 ```javascript
