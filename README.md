@@ -59,7 +59,7 @@ Get the 11-character hash string for your app using the [AppSignatureHelper](htt
 ### Remarks
 
 - The hash will be different from debug and release builds, since they have different signatures.
-- Caling this method with an active SMS retriever running will **void**  the retriever and the SMS wont be incercepted.
+- Calling this method with an active SMS retriever running will **void**  the retriever and the SMS wont be incercepted.
 - Google advices against dynamically retrieving your hash code before sending the SMS:
 
 > Do not use hash strings dynamically computed on the client in your verification messages.
