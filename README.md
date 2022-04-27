@@ -28,7 +28,7 @@ Start listening for a single incoming [verification SMS](https://developers.goog
 :warning:  Method moved from **window** to **cordova.plugins** object in version 2.0.0
 
 - When a valid SMS is intercepted, the **onSMSArrive** event is fired and SMS watching is stopped.
-- When the 5 minutes timeout is reached, SMS watching is stopped and the failureCallback returns **TIMEOUT**.
+- When the 5 minutes timeout is reached, SMS watching is stopped and the **failureCallback** returns **TIMEOUT**.
 
 ### Return values
 
