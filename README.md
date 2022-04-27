@@ -23,7 +23,7 @@ cordova plugin add cordova-plugin-sms-retriever
 # Methods
 
 ## startWatch
-Start listening for a single incoming [verification SMS](https://developers.google.com/identity/sms-retriever/verify#1_construct_a_verification_message "verification SMS"). for 5 minutes.
+Start listening for a single incoming [verification SMS](https://developers.google.com/identity/sms-retriever/verify#1_construct_a_verification_message "verification SMS") for 5 minutes.
 
 :warning:  Method moved from **window** to **cordova.plugins** object in version 2.0.0
 
