@@ -1,6 +1,4 @@
-| License | Platform | Contribute |
-| --- | --- | --- |
-| ![License](https://img.shields.io/badge/license-MIT-orange.svg) | ![Platform](https://img.shields.io/badge/platform-android-green.svg) | [![Donate](https://img.shields.io/badge/donate-PayPal-green.svg)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=G33QACCVKYD7U) |
+![License](https://img.shields.io/badge/license-MIT-orange.svg) ![Platform](https://img.shields.io/badge/platform-android-green.svg) [![Donate](https://img.shields.io/badge/donate-PayPal-green.svg)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=G33QACCVKYD7U)
 
 # cordova-plugin-sms-retriever
 
@@ -52,13 +50,14 @@ cordova.plugins.SMSRetriever.startWatch(onSuccess, onFail);
 
 ## getHashString
 
-Get the 11-character hash string for your app using the [AppSignatureHelper](https://github.com/googlesamples/android-credentials/blob/master/sms-verification/android/app/src/main/java/com/google/samples/smartlock/sms_verify/AppSignatureHelper.java "AppSignatureHelper") class. This string must be appended to the SMS received in order for the API to read this message. 
+Get the 11-character hash string for your app using the [AppSignatureHelper](https://github.com/googlesamples/android-credentials/blob/master/sms-verification/android/app/src/main/java/com/google/samples/smartlock/sms_verify/AppSignatureHelper.java "AppSignatureHelper") class. This string must be appended to the SMS received in order for the API to read this message.
 
 :warning: Method moved from **window** to **cordova.plugins** object in version 2.0.0
 
 ### Remarks
 
 - The hash will be different from debug and release builds, since they have different signatures.
+- Play Store now re-signs signed APKs on upload. This will most certainly change the hash string.
 - Calling this method with an active SMS retriever running will **void**  the retriever and the SMS wont be incercepted.
 - Google advices against dynamically retrieving your hash code before sending the SMS:
 
@@ -107,21 +106,26 @@ document.addEventListener('onSMSArrive', function(args) {
 The verification SMS message you send to the user must:
 
 - Be no longer than 140 bytes
-- ~~Begin with the prefix <#>~~  *No longer needed since plugin version **2.0.0***
+- Begin with the prefix <#>
 - Contain a one-time code that the client sends back to your server to complete the verification flow
 - End with the 11-character hash string that identifies your app
 
+### Remarks
+
+- Starting from **plugin 2.0.0**, the <#> prefix is no longer required by the plugin.
+- Starting from an unknown **Play Services** version, the <#> is no longer required.
+
 Otherwise, the contents of the verification message can be whatever you choose. It is helpful to create a message from which you can easily extract the one-time code later on. For example, a valid verification message might look like the following:
 
-    AZC123 is your code for andreszsogon.com SMS Retriever Demo App. hi5c8+bkQy0
+    <#> AZC123 is your code for andreszsogon.com SMS Retriever Demo App. hi5c8+bkQy0
 
 :information_source: It is a good practice to prepend the verification code to the beginning of the SMS, in case the retriever fails, the user can see the code immediately from the notification bar.
 
-# Demo App by Andrés Zsögön
+# Plugin demo app
 
 You can download the [SMS Retriever plugin demo app](https://www.andreszsogon.com/cordova-sms-retriever-plugin-demo-app/) from the Play Store; its source code is provided in the **demo** folder.
 
-[![ScreenShot](https://www.andreszsogon.com/wp-content/uploads/Screenshot_1650660474-165x300.png)](https://www.andreszsogon.com/cordova-sms-retriever-plugin-demo-app/ "![ScreenShot](https://www.andreszsogon.com/wp-content/uploads/Screenshot_1650660474-165x300.png)") [![ScreenShot](https://www.andreszsogon.com/wp-content/uploads/Screenshot_1650660479-165x300.png)](https://www.andreszsogon.com/cordova-sms-retriever-plugin-demo-app/ "![ScreenShot](https://www.andreszsogon.com/wp-content/uploads/Screenshot_1650660479-165x300.png)") [![ScreenShot](https://www.andreszsogon.com/wp-content/uploads/Screenshot_1650660603-165x300.png)](https://www.andreszsogon.com/cordova-sms-retriever-plugin-demo-app/ "![ScreenShot](https://www.andreszsogon.com/wp-content/uploads/Screenshot_1650660603-165x300.png)")
+[![](https://github.com/andreszs/cordova-plugin-demos/blob/main/com.andreszs.smsretriever.demo/screenshots/sms_retriever_demo_3.png?raw=true)](https://www.andreszsogon.com/cordova-sms-retriever-plugin-demo-app/) [![](https://github.com/andreszs/cordova-plugin-demos/blob/main/com.andreszs.smsretriever.demo/screenshots/sms_retriever_demo_4.png?raw=true)](https://www.andreszsogon.com/cordova-sms-retriever-plugin-demo-app/)
 
 # FAQ
 
@@ -145,7 +149,15 @@ In the emulator you can test the plugin using the unsigned debug APK. Real devic
 
 Google advices against [computing the hash string](https://developers.google.com/identity/sms-retriever/verify#computing_your_apps_hash_string "computing the hash string") in the client for security concerns. Get the hash string in advance and then do not call the get hash method again in the final production app.
 
+### When was the <#> SMS prefix removed?
+
+The <#> prefix formerly required to retrieve the SMS was silently removed in an unknown Play Services version and no longer appears in the SMS Retriever API docs.
+
 # Changelog
+
+### 2.0.1
+
+- Updated README with important details about SMS generation
 
 ### 2.0.0
 - :warning: Methods moved from the global **window** to the **cordova.plugins** object
@@ -153,14 +165,3 @@ Google advices against [computing the hash string](https://developers.google.com
 - Removed the requirement include the <#> prefix in the SMS
 - Improved stability and error checking
 - Updated demo app, now available in Play Store
-
-### 1.1.1
-- Removed the `cordova-support-google-services` plugin dependency which is no longer required
-
-### 1.1.0
-- Added `cordova >= 7.1.0` engine to config.xml
-- Added `cordova-android >= 6.3.0` engine to config.xml
-- Added missing `com.google.android.gms:play-services-auth` framework to config.xml
-- Bumped `PLAY_SERVICES_VERSION` to 15.0.0 in config.xml
-- **Notice**: This plugin requires `classpath com.android.tools.build:gradle:4.0.1` in build.gradle, otherwise your build will probably fail with Cordova 9.0.0.
-
