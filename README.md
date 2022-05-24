@@ -125,7 +125,7 @@ Otherwise, the contents of the verification message can be whatever you choose. 
 
 You can download the compiled [SMS Retriever plugin demo](https://www.andreszsogon.com/cordova-sms-retriever-plugin-demo-app/) app and inspect the source code in my [plugin demos repository](https://github.com/andreszs/cordova-plugin-demos "plugin demos repository").
 
-<img src="https://github.com/andreszs/cordova-plugin-demos/blob/main/com.andreszs.smsretriever.demo/screenshots/sms_retriever_demo_2.png?raw=true" width="280" /> <img src="https://github.com/andreszs/cordova-plugin-demos/blob/main/com.andreszs.smsretriever.demo/screenshots/sms_retriever_demo_3.png?raw=true" width="280" /> <img src="https://github.com/andreszs/cordova-plugin-demos/blob/main/com.andreszs.smsretriever.demo/screenshots/sms_retriever_demo_4.png?raw=true" width="280" />
+<img src="https://github.com/andreszs/cordova-plugin-demos/blob/main/com.andreszs.smsretriever.demo/screenshots/sms_retriever_demo_2.png?raw=true" width="240" /> <img src="https://github.com/andreszs/cordova-plugin-demos/blob/main/com.andreszs.smsretriever.demo/screenshots/sms_retriever_demo_3.png?raw=true" width="240" /> <img src="https://github.com/andreszs/cordova-plugin-demos/blob/main/com.andreszs.smsretriever.demo/screenshots/sms_retriever_demo_4.png?raw=true" width="240" />
 
 # FAQ
 
