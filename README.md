@@ -23,6 +23,10 @@ cordova plugin add cordova-plugin-sms-retriever
 ## startWatch
 Start listening for a single incoming [verification SMS](https://developers.google.com/identity/sms-retriever/verify#1_construct_a_verification_message "verification SMS") for 5 minutes.
 
+```javascript
+cordova.plugins.SMSRetriever.startWatch(successCallback, errorCallback);
+```
+
 :warning:  Method moved from **window** to **cordova.plugins** object in version 2.0.0
 
 - When a valid SMS is intercepted, the **onSMSArrive** event is fired and SMS watching is stopped.
@@ -51,6 +55,10 @@ cordova.plugins.SMSRetriever.startWatch(onSuccess, onFail);
 ## getHashString
 
 Get the 11-character hash string for your app using the [AppSignatureHelper](https://github.com/googlesamples/android-credentials/blob/master/sms-verification/android/app/src/main/java/com/google/samples/smartlock/sms_verify/AppSignatureHelper.java "AppSignatureHelper") class. This string must be appended to the SMS received in order for the API to read this message.
+
+```javascript
+cordova.plugins.SMSRetriever.getHashString(successCallback, errorCallback);
+```
 
 :warning: Method moved from **window** to **cordova.plugins** object in version 2.0.0
 
@@ -123,7 +131,8 @@ Otherwise, the contents of the verification message can be whatever you choose. 
 
 # Plugin demo app
 
-You can download the compiled [SMS Retriever plugin demo](https://www.andreszsogon.com/cordova-sms-retriever-plugin-demo-app/) app and inspect the source code in my [plugin demos repository](https://github.com/andreszs/cordova-plugin-demos "plugin demos repository").
+- [Compiled APK and reference](https://www.andreszsogon.com/cordova-sms-retriever-plugin-demo-app/) including testing procedure instructions
+- [Source code for www folder](https://github.com/andreszs/cordova-plugin-demos)
 
 <img src="https://github.com/andreszs/cordova-plugin-demos/blob/main/com.andreszs.smsretriever.demo/screenshots/sms_retriever_demo_2.png?raw=true" width="240" /> <img src="https://github.com/andreszs/cordova-plugin-demos/blob/main/com.andreszs.smsretriever.demo/screenshots/sms_retriever_demo_3.png?raw=true" width="240" /> <img src="https://github.com/andreszs/cordova-plugin-demos/blob/main/com.andreszs.smsretriever.demo/screenshots/sms_retriever_demo_4.png?raw=true" width="240" />
 
