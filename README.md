@@ -121,7 +121,7 @@ The verification SMS message you send to the user must:
 ### Remarks
 
 - Starting from **plugin 2.0.0**, the <#> prefix is no longer required by the plugin.
-- Starting from an unknown **Play Services** version, the <#> is no longer required.
+- Starting from an unknown **Play Services** version, the <#> is no longer required in the received SMS.
 
 Otherwise, the contents of the verification message can be whatever you choose. It is helpful to create a message from which you can easily extract the one-time code later on. For example, a valid verification message might look like the following:
 
