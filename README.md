@@ -18,7 +18,42 @@ cordova plugin add cordova-plugin-sms-retriever
 - Download the **google-services.json** file into your **platforms/android** folder.
 - Make sure to sign your build with a keystore file.
 
+## Ionic
+
+### Dev version:
+
+```bash
+ npm i awesome-cordova-plugins-sms-retriever-api
+```
+
+### Prod version: https://github.com/danielsogl/awesome-cordova-plugins/pull/4528
+
+```bash
+ npm i @awesome-cordova-plugins/sms-retriever-api
+```
+
+## Ionic Demo
+https://github.com/MaximBelov/cordova-plugin-sms-retriever-lab
+
+
 # Methods
+
+## getPhoneNumber
+
+Opens a dialog to select your mobile numbers saved in phone and [returns selected phone number](https://developers.google.com/identity/sms-retriever/request#1_obtain_the_users_phone_number).
+
+
+```javascript
+
+var onSuccess = function (strSuccess) {
+  console.log(strSuccess);
+};
+var onFail = function (strError) {
+  console.log(strError);
+};
+cordova.plugins.SMSRetriever.getPhoneNumber(onSuccess, onFail);
+
+```
 
 ## startWatch
 Start listening for a single incoming [verification SMS](https://developers.google.com/identity/sms-retriever/verify#1_construct_a_verification_message "verification SMS") for 5 minutes.
@@ -52,6 +87,25 @@ var onFail = function (strError) {
 cordova.plugins.SMSRetriever.startWatch(onSuccess, onFail);
 ```
 
+## stopWatch
+Stops listening for a single incoming verification SMS
+
+### Return values
+
+- **SMS_RETRIEVER_DONE**
+
+### Example
+
+```javascript
+var onSuccess = function (strSuccess) {
+  console.log(strSuccess);
+};
+var onFail = function (strError) {
+  console.log(strError);
+};
+cordova.plugins.SMSRetriever.stopWatch(onSuccess, onFail);
+```
+
 ## getHashString
 
 Get the 11-character hash string for your app using the [AppSignatureHelper](https://github.com/googlesamples/android-credentials/blob/master/sms-verification/android/app/src/main/java/com/google/samples/smartlock/sms_verify/AppSignatureHelper.java "AppSignatureHelper") class. This string must be appended to the SMS received in order for the API to read this message.
@@ -61,6 +115,8 @@ cordova.plugins.SMSRetriever.getHashString(successCallback, errorCallback);
 ```
 
 :warning: Method moved from **window** to **cordova.plugins** object in version 2.0.0
+
+
 
 ### Remarks
 
@@ -163,6 +219,11 @@ Google advices against [computing the hash string](https://developers.google.com
 The <#> prefix formerly required to retrieve the SMS was silently removed in an unknown Play Services version and no longer appears in the SMS Retriever API docs.
 
 # Changelog
+
+### 3.0.0
+
+- Added method stopWatch 
+- Added method getPhoneNumber 
 
 ### 2.0.1
 
