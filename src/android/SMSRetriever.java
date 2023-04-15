@@ -227,6 +227,7 @@ public class SMSRetriever extends CordovaPlugin implements SMSBroadcastReceiver.
 
             HintRequest hintRequest = new HintRequest.Builder().setHintPickerConfig(new CredentialPickerConfig.Builder().setShowCancelButton(true).build()).setPhoneNumberIdentifierSupported(true).build();
 
+            cordova.setActivityResultCallback(this);
             PendingIntent hintPickerIntent = Auth.CredentialsApi.getHintPickerIntent(apiClient, hintRequest);
             activity.startIntentSenderForResult(hintPickerIntent.getIntentSender(), RESOLVE_HINT, null, 0, 0, 0);
         } catch (IntentSender.SendIntentException e) {
