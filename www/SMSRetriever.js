@@ -14,9 +14,15 @@ var smsRetriever = {
 		};
 		exec(onSuccessCallback, failureCallback, 'SMSRetriever', 'startWatch', []);
 	},
+	stopWatch: function (successCallback, failureCallback) {
+		exec(successCallback, failureCallback, 'SMSRetriever', 'stopWatch', []);
+	},
 	getHashString: function (successCallback, failureCallback) {
 		exec(successCallback, failureCallback, 'SMSRetriever', 'getHashString', []);
-	}
+	},
+	getPhoneNumber: function (successCallback, failureCallback) {
+		exec(successCallback, failureCallback, 'SMSRetriever', 'getPhoneNumber', []);
+	},
 };
 
 module.exports = smsRetriever;
