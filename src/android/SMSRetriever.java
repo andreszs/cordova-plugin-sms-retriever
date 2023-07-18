@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.IntentSender;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 
@@ -152,7 +153,12 @@ public class SMSRetriever extends CordovaPlugin implements SMSBroadcastReceiver.
                     intentFilter.addAction(SmsRetriever.SMS_RETRIEVED_ACTION);
 
                     try {
-                        applicationContext.registerReceiver(smsBroadcastReceiver, intentFilter);
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                            applicationContext.registerReceiver(smsBroadcastReceiver, intentFilter,
+                                    Context.RECEIVER_EXPORTED);
+                        } else {
+                            applicationContext.registerReceiver(smsBroadcastReceiver, intentFilter);
+                        }
                         PluginResult result = new PluginResult(PluginResult.Status.OK, "SMS_RETRIEVER_STARTED");
                         result.setKeepCallback(true);
                         startWatchCallbackContext.sendPluginResult(result);
