@@ -8,6 +8,19 @@ Cordova plugin to receive verification SMS in Android using the [SMS Retriever A
 
 This plugin requires the [Google Play Services 15.0.0](https://www.apkmirror.com/apk/google-inc/google-play-services/google-play-services-15-0-90-release/ "Google Play Services 15.0.0") or newer in order to work properly.
 
+Minimum supported SDK version 24.
+The target SDK version 33.
+
+
+```xml
+<platform name="android">
+    ...
+        <preference name="android-minSdkVersion" value="24" />
+        <preference name="android-targetSdkVersion" value="33" />
+    ...
+</platform>
+```
+
 # Installation
 
 - Add the plugin from NPM:
@@ -219,6 +232,13 @@ Google advices against [computing the hash string](https://developers.google.com
 The <#> prefix formerly required to retrieve the SMS was silently removed in an unknown Play Services version and no longer appears in the SMS Retriever API docs.
 
 # Changelog
+
+### 4.0.0
+
+- Added support autofill for [Android14](https://developer.android.com/about/versions/14/behavior-changes-14#runtime-receivers-exported)
+
+BREAKING CHANGES: SDK versions: minimum - 24 and target - 33.
+
 
 ### 3.0.0
 
