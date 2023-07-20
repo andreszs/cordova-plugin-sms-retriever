@@ -23,9 +23,13 @@ The target SDK version 33.
 
 # Installation
 
-- Add the plugin from NPM:
+- Install stable from NPM:
 ```bash
 cordova plugin add cordova-plugin-sms-retriever
+```
+- Install master from GitHub:
+```bash
+cordova plugin add https://github.com/andreszs/cordova-plugin-sms-retriever
 ```
 - Create your project and Android app in [Firebase Console](https://console.firebase.google.com/ "Firebase Console")
 - Download the **google-services.json** file into your **platforms/android** folder.
@@ -233,12 +237,15 @@ The <#> prefix formerly required to retrieve the SMS was silently removed in an 
 
 # Changelog
 
+### 4.0.1
+
+- Restored support for SDK versions: minimum 21, target 31.
+- Tested on Android 5.1, 6.0, 13, 14.
+
 ### 4.0.0
 
 - Added support autofill for [Android14](https://developer.android.com/about/versions/14/behavior-changes-14#runtime-receivers-exported)
-
-BREAKING CHANGES: SDK versions: minimum - 24 and target - 33.
-
+- BREAKING CHANGES: SDK versions: minimum - 24 and target - 33.
 
 ### 3.0.0
 
