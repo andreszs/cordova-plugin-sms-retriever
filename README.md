@@ -8,15 +8,12 @@ Cordova plugin to receive verification SMS in Android using the [SMS Retriever A
 
 This plugin requires the [Google Play Services 15.0.0](https://www.apkmirror.com/apk/google-inc/google-play-services/google-play-services-15-0-90-release/ "Google Play Services 15.0.0") or newer in order to work properly.
 
-Minimum supported SDK version 24.
-The target SDK version 33.
-
+Minimum supported SDK version 21.
 
 ```xml
 <platform name="android">
     ...
-        <preference name="android-minSdkVersion" value="24" />
-        <preference name="android-targetSdkVersion" value="33" />
+        <preference name="android-minSdkVersion" value="21" />
     ...
 </platform>
 ```
