@@ -234,6 +234,15 @@ The <#> prefix formerly required to retrieve the SMS was silently removed in an 
 
 # Changelog
 
+### 4.0.3
+
+- Updated package.json as per npm suggestions
+
+### 4.0.2
+
+- Merged PR#18
+- Removed the nbproject folder
+
 ### 4.0.1
 
 - Restored support for SDK versions: minimum 21, target 31.
