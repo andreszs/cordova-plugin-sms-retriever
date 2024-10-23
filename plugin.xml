@@ -22,8 +22,8 @@
 
 	<!-- android -->
 	<platform name="android">
-		<preference name="PLAY_SERVICES_AUTH_VERSION" default="20.5.0"/>
-		<preference name="PLAY_SERVICES_AUTH_API_PHONE_VERSION" default="18.0.1"/>
+		<preference name="PLAY_SERVICES_AUTH_VERSION" default="21.2.0"/>
+		<preference name="PLAY_SERVICES_AUTH_API_PHONE_VERSION" default="18.1.0"/>
 		<framework src="com.google.android.gms:play-services-auth:$PLAY_SERVICES_AUTH_VERSION"/>
 		<framework src="com.google.android.gms:play-services-auth-api-phone:$PLAY_SERVICES_AUTH_API_PHONE_VERSION"/>
 

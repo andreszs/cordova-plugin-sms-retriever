@@ -1,17 +1,12 @@
 package com.andreszs.smsretriever;
 
 import android.app.Activity;
-import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.content.IntentSender;
 import android.os.Build;
-import android.os.Bundle;
 import android.util.Log;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.fragment.app.FragmentActivity;
 
 import org.apache.cordova.CallbackContext;
@@ -25,12 +20,11 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import com.google.android.gms.auth.api.Auth;
-import com.google.android.gms.auth.api.credentials.Credential;
-import com.google.android.gms.auth.api.credentials.CredentialPickerConfig;
-import com.google.android.gms.auth.api.credentials.HintRequest;
+import com.google.android.gms.auth.api.identity.GetPhoneNumberHintIntentRequest;
+import com.google.android.gms.auth.api.identity.Identity;
 import com.google.android.gms.auth.api.phone.SmsRetriever;
 import com.google.android.gms.auth.api.phone.SmsRetrieverClient;
-import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -217,56 +211,50 @@ public class SMSRetriever extends CordovaPlugin implements SMSBroadcastReceiver.
 
     private void getPhoneNumber(final CallbackContext callbackContext) {
         this.getPhoneNumberCallbackContext = callbackContext;
-        try {
-            FragmentActivity activity = cordova.getActivity();
-            if (apiClient == null) {
-                apiClient = new GoogleApiClient.Builder(activity).addConnectionCallbacks(new GoogleApiClient.ConnectionCallbacks() {
-                    @Override
-                    public void onConnected(@Nullable Bundle bundle) {
-                        Log.d(LOG_TAG, "onConnected: ");
-                    }
-
-                    @Override
-                    public void onConnectionSuspended(int i) {
-                        Log.d(LOG_TAG, "onConnectionSuspended: ");
-                    }
-                }).enableAutoManage(activity, new GoogleApiClient.OnConnectionFailedListener() {
-                    @Override
-                    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
-                    }
-                }).addApi(Auth.CREDENTIALS_API).build();
-            }
-
-            HintRequest hintRequest = new HintRequest.Builder().setHintPickerConfig(new CredentialPickerConfig.Builder().setShowCancelButton(true).build()).setPhoneNumberIdentifierSupported(true).build();
-
-            cordova.setActivityResultCallback(this);
-            PendingIntent hintPickerIntent = Auth.CredentialsApi.getHintPickerIntent(apiClient, hintRequest);
-            activity.startIntentSenderForResult(hintPickerIntent.getIntentSender(), RESOLVE_HINT, null, 0, 0, 0);
-        } catch (IntentSender.SendIntentException e) {
-            e.printStackTrace();
+        FragmentActivity activity = cordova.getActivity();
+        if (apiClient == null) {
+            apiClient = new GoogleApiClient.Builder(activity)
+                    .addApi(Auth.GOOGLE_SIGN_IN_API)
+                    .build();
         }
+
+        cordova.setActivityResultCallback(this);
+
+        GetPhoneNumberHintIntentRequest request = GetPhoneNumberHintIntentRequest.builder().build();
+        Identity.getSignInClient(activity)
+                .getPhoneNumberHintIntent(request)
+                .addOnSuccessListener( result -> {
+                    try {
+                        activity.startIntentSenderForResult(result.getIntentSender(), RESOLVE_HINT, null, 0, 0, 0);
+                    } catch(Exception e) {
+                        String message = "Launching the PendingIntent failed";
+                        getPhoneNumberCallbackContext.error(message);
+                        Log.e(LOG_TAG, message, e);
+                    }
+                })
+                .addOnFailureListener(e -> {
+                    getPhoneNumberCallbackContext.error("Phone Number Hint disabled. Enable: Settings -> Google -> Autofill -> Phone number sharing");
+                    Log.e(LOG_TAG, "Phone Number Hint disabled", e);
+                });
     }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent intent) {
         super.onActivityResult(requestCode, resultCode, intent);
-        String phoneNumber = null;
         try {
             if (requestCode == RESOLVE_HINT) {
                 if (resultCode == Activity.RESULT_OK) {
-                    Credential credential = intent.getParcelableExtra(Credential.EXTRA_KEY);
-                    phoneNumber = credential.getId();
+                    FragmentActivity activity = cordova.getActivity();
+                    String phoneNumber = Identity.getSignInClient(activity).getPhoneNumberFromIntent(intent);
+                    getPhoneNumberCallbackContext.success(phoneNumber);
+                } else {
+                    throw new NullPointerException("Phone number not selected");
                 }
-            }
 
-            if (phoneNumber != null) {
-                getPhoneNumberCallbackContext.success(phoneNumber);
-            } else {
-                getPhoneNumberCallbackContext.error("Phone number not selected.");
             }
-        } catch (Exception ex) {
-            ex.printStackTrace();
+        } catch (ApiException | NullPointerException ex) {
             getPhoneNumberCallbackContext.error(ex.getMessage());
+            ex.printStackTrace();
         }
     }
 
