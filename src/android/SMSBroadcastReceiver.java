@@ -24,6 +24,9 @@ public class SMSBroadcastReceiver extends BroadcastReceiver {
     public void onReceive(Context context, Intent intent) {
         if (SmsRetriever.SMS_RETRIEVED_ACTION.equals(intent.getAction())) {
             Bundle extras = intent.getExtras();
+            if (extras == null) {
+                return;
+            }
             Status status = (Status) extras.get(SmsRetriever.EXTRA_STATUS);
             if (status == null) {
                 return;
