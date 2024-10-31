@@ -234,6 +234,10 @@ The <#> prefix formerly required to retrieve the SMS was silently removed in an 
 
 # Changelog
 
+### 4.0.4
+
+- Merged PR#19
+
 ### 4.0.3
 
 - Updated package.json as per npm suggestions
@@ -255,8 +259,8 @@ The <#> prefix formerly required to retrieve the SMS was silently removed in an 
 
 ### 3.0.0
 
-- Added method stopWatch 
-- Added method getPhoneNumber 
+- Added method stopWatch
+- Added method getPhoneNumber
 
 ### 2.0.1
 
