@@ -253,8 +253,12 @@ public class SMSRetriever extends CordovaPlugin implements SMSBroadcastReceiver.
 
             }
         } catch (ApiException | NullPointerException ex) {
-            getPhoneNumberCallbackContext.error(ex.getMessage());
-            ex.printStackTrace();
+            if(ex instanceof ApiException){
+                getPhoneNumberCallbackContext.error(ex.getMessage());
+            }
+            if(ex != null){
+                ex.printStackTrace();
+            }
         }
     }
 
