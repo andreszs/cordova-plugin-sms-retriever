@@ -234,9 +234,13 @@ The <#> prefix formerly required to retrieve the SMS was silently removed in an 
 
 # Changelog
 
+### 4.0.5
+
+- Merged #19
+
 ### 4.0.4
 
-- Merged PR#19
+- Merged #19
 
 ### 4.0.3
 
@@ -244,7 +248,7 @@ The <#> prefix formerly required to retrieve the SMS was silently removed in an 
 
 ### 4.0.2
 
-- Merged PR#18
+- Merged #18
 - Removed the nbproject folder
 
 ### 4.0.1
