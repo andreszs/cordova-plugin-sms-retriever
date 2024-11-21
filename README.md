@@ -230,11 +230,11 @@ The <#> prefix formerly required to retrieve the SMS was silently removed in an 
 
 ### 4.0.5
 
-- Merged [#20](#20)
+- Merged [#20](https://github.com/andreszs/cordova-plugin-sms-retriever/pull/20)
 
 ### 4.0.4
 
-- Merged [#19](#19)
+- Merged [#19](https://github.com/andreszs/cordova-plugin-sms-retriever/pull/19)
 
 ### 4.0.3
 
