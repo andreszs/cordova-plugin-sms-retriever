@@ -76,8 +76,6 @@ Start listening for a single incoming [verification SMS](https://developers.goog
 cordova.plugins.SMSRetriever.startWatch(successCallback, errorCallback);
 ```
 
-:warning:  Method moved from **window** to **cordova.plugins** object in version 2.0.0
-
 - When a valid SMS is intercepted, the **onSMSArrive** event is fired and SMS watching is stopped.
 - When the 5 minutes timeout is reached, SMS watching is stopped and the **failureCallback** returns **TIMEOUT**.
 
@@ -127,10 +125,6 @@ Get the 11-character hash string for your app using the [AppSignatureHelper](htt
 ```javascript
 cordova.plugins.SMSRetriever.getHashString(successCallback, errorCallback);
 ```
-
-:warning: Method moved from **window** to **cordova.plugins** object in version 2.0.0
-
-
 
 ### Remarks
 
