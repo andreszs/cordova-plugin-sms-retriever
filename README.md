@@ -230,11 +230,11 @@ The <#> prefix formerly required to retrieve the SMS was silently removed in an 
 
 ### 4.0.5
 
-- Merged #20
+- Merged [#20](#20)
 
 ### 4.0.4
 
-- Merged #19
+- Merged [#19](#19)
 
 ### 4.0.3
 
