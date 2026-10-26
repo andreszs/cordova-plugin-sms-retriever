@@ -1,8 +1,24 @@
-![npm](https://img.shields.io/npm/dt/cordova-plugin-sms-retriever) ![npm](https://img.shields.io/npm/v/cordova-plugin-sms-retriever) ![GitHub package.json version](https://img.shields.io/github/package-json/v/andreszs/cordova-plugin-sms-retriever?color=FF6D00&label=master&logo=github) ![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/andreszs/cordova-plugin-sms-retriever) ![GitHub top language](https://img.shields.io/github/languages/top/andreszs/cordova-plugin-sms-retriever) ![GitHub](https://img.shields.io/github/license/andreszs/cordova-plugin-sms-retriever) ![GitHub last commit](https://img.shields.io/github/last-commit/andreszs/cordova-plugin-sms-retriever)
+![npm downloads](https://img.shields.io/npm/dt/cordova-plugin-sms-retriever) ![npm version](https://img.shields.io/npm/v/cordova-plugin-sms-retriever) ![GitHub package.json version](https://img.shields.io/github/package-json/v/andreszs/cordova-plugin-sms-retriever?color=FF6D00&label=master&logo=github) [![Android demo](https://img.shields.io/badge/demo-Android-2ea44f?logo=apachecordova&logoColor=white)](https://github.com/andreszs/cordova-plugin-demos/tree/main/com.andreszs.smsretriever.demo) ![GitHub license](https://img.shields.io/github/license/andreszs/cordova-plugin-sms-retriever)
 
 # cordova-plugin-sms-retriever
 
 Cordova plugin to receive verification SMS in Android using the [SMS Retriever API](https://developers.google.com/identity/sms-retriever/overview).
+
+## Table of contents
+
+- [Prerequisites](#prerequisites)
+- [Installation](#installation)
+  - [Ionic](#ionic)
+- [Methods](#methods)
+  - [`getPhoneNumber`](#getphonenumber)
+  - [`startWatch`](#startwatch)
+  - [`stopWatch`](#stopwatch)
+  - [`getHashString`](#gethashstring)
+- [Events](#events)
+- [Construct a verification SMS](#construct-a-verification-sms)
+- [Plugin demo app](#plugin-demo-app)
+- [FAQ](#faq)
+- [Changelog](#changelog)
 
 # Prerequisites
 
