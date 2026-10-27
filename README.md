@@ -18,7 +18,6 @@ Cordova plugin to receive verification SMS in Android using the [SMS Retriever A
 - [Construct a verification SMS](#construct-a-verification-sms)
 - [Plugin demo app](#plugin-demo-app)
 - [FAQ](#faq)
-- [Changelog](#changelog)
 
 # Prerequisites
 
@@ -241,48 +240,3 @@ Google advices against [computing the hash string](https://developers.google.com
 ### When was the <#> SMS prefix removed?
 
 The <#> prefix formerly required to retrieve the SMS was silently removed in an unknown Play Services version and no longer appears in the SMS Retriever API docs.
-
-# Changelog
-
-### 4.0.5
-
-- Merged [#20](https://github.com/andreszs/cordova-plugin-sms-retriever/pull/20)
-
-### 4.0.4
-
-- Merged [#19](https://github.com/andreszs/cordova-plugin-sms-retriever/pull/19)
-
-### 4.0.3
-
-- Updated package.json as per npm suggestions
-
-### 4.0.2
-
-- Merged #18
-- Removed the nbproject folder
-
-### 4.0.1
-
-- Restored support for SDK versions: minimum 21, target 31.
-- Tested on Android 5.1, 6.0, 13, 14.
-
-### 4.0.0
-
-- Added support autofill for [Android14](https://developer.android.com/about/versions/14/behavior-changes-14#runtime-receivers-exported)
-- BREAKING CHANGES: SDK versions: minimum - 24 and target - 33.
-
-### 3.0.0
-
-- Added method stopWatch
-- Added method getPhoneNumber
-
-### 2.0.1
-
-- Updated README with important details about SMS generation
-
-### 2.0.0
-- :warning: Methods moved from the global **window** to the **cordova.plugins** object
-- Improved all methods return values to make them easier to parse
-- Removed the requirement include the <#> prefix in the SMS
-- Improved stability and error checking
-- Updated demo app, now available in Play Store
